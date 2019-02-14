@@ -57,4 +57,21 @@ class InteractiveRecord
     sql = "SELECT * FROM #{self.table_name} WHERE #{hash.keys[0].to_s} = '#{hash.values[0].to_s}'"
     DB[:conn].execute(sql)
   end
+  
+  def self.find_by_name(name)
+    sql = "SELECT * FROM #{self.table_name} WHERE name = '#{name}'"
+    DB[:conn].execute(sql)
+  end
+
+  def self.find_by(column_hash)
+    column_name = column_hash.keys[0]
+    column_value = column_hash.values[0]
+    if column_value.is_a? Integer
+      sql = "SELECT * FROM #{self.table_name} WHERE #{column_name}=#{column_value}"
+    elsif column_value.is_a? String
+      sql = "SELECT * FROM #{self.table_name} WHERE #{column_name}='#{column_value}'"
+    end
+    DB[:conn].execute(sql)
+  end
+  
 end
